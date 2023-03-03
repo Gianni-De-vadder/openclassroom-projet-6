@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="api.js"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
+</head>
+
+<body>
+    <header id="header">
+        <img src="images/juststreamit.png" />
+        <nav>
+            <ul>
+                <li>
+                    <a href="#">Accueil</a>
+                </li>
+                <li>
+                    JustStreamIt
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="display_movie_infos">
+        <div id="close_button" onclick="closebutton()">
+            X
+        </div>
+        <h1 id="movie_title">Titre du film</h1>
+        <img id="movie_image"
+            src="https://m.media-amazon.com/images/M/MV5BYzkxZTNjYTctOWEwMC00ODYyLThiMjQtNjU2MmUwODU1YmFiXkEyXkFqcGdeQXVyNzI4MDMyMTU@._V1_UY268_CR8,0,182,268_AL_.jpg"
+            alt="Image du film"></img>
+        <p id="movie_description">The story of how social networks and instant messengers are changing the life of a
+            modern person. The story of how social networks and instant messengers are changing the life of a modern
+            person.</p>
+        <h2>Informations :</h2>
+        <div id="movie_data">
+            <div id="actors_container">
+                <ul class="actors" id="movie_actors">
+                </ul>
+            </div>
+            <div id="infos_container">
+                <div id='first_col' class="columns">
+                    <div class="info_container" id="movie_date_container"><span>Sorti le : </span>
+                        <p id="movie_date">24/09/1999</p>
+                    </div>
+                    <div class="info_container"><span>Réalisé par : </span>
+                        <p id="movie_director">Steven Spielberg</p>
+                    </div>
+                    <div class="info_container"><span>Durée :</span>
+                        <p id="movie_time">4h</p>
+                    </div>
+                </div>
+                <div id='second_col' class="columns">
+                    <div class="info_container"><span>Votes</span>
+                        <p id="movie_rated">1200</p>
+                    </div>
+                    <div class="info_container"><span>Noté sur IMDB</span>
+                        <p id="movie_imdb">5.5/10</p>
+                    </div>
+                </div>
+                <div id='third_col' class="columns">
+                    <div class="info_container"><span>Pays d'origine : </span>
+                        <p id="movie_country">France</p>
+                    </div>
+                    <div class="info_container"><span>Box office : </span>
+                        <p id="movie_box_office">20000000000$</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="best-movie">
+        <h1 id="best_movie_announcement" class="best_movie_title">Meilleur film selon vos notes :</h1>
+        <div id="best_movie_button_container">
+            <button class="best_movie_id" onclick="open_best_movie()">Play</button>
+            <button class="best_movie_id" onclick="open_best_movie()">Voir plus</button>
+        </div>
+    </div>
+    </div>
+
+    <div id="sliders_container">
+        <swiper-container id="best_movies_slider" class="mySwiper swiper-container" init="false">
+        </swiper-container>
+
+        <swiper-container id="romance_slider" class="mySwiper swiper-container" init="false">
+        </swiper-container>
+
+        <swiper-container id="crime_slider" class="mySwiper swiper-container" init="false">
+        </swiper-container>
+
+        <swiper-container id="fantasy_slider" class="mySwiper swiper-container" init="false">
+        </swiper-container>
+        <swiper-container id="drama_slider" class="mySwiper swiper-container" init="false">
+        </swiper-container>
+
+        <!-- <swiper-container id="fantasy_slider" class="mySwiper swiper-container" init="false">
+        </swiper-container> -->
+    </div>
+
+
+</body>
+<script>
+    add_movies_to_slider_by_category('romance', 7, 'romance_slider')
+    add_movies_to_slider_by_category('crime', 7, 'crime_slider')
+    add_movies_to_slider_by_category('fantasy', 7, 'fantasy_slider')
+    add_movies_to_slider_by_category('drama', 7, 'drama_slider')
+    swiper();
+    add_bests_movies_to_slider('Meilleurs films', 7, 'best_movies_slider')
+    create_best_movie_div('best-movie');
+
+</script>
+
+</html>

@@ -1,0 +1,291 @@
+* {
+    padding: 0;
+    margin: 0;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+* ::-webkit-scrollbar {
+    display: none;
+}
+
+
+body {
+    background-color: #000;
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    height: 8vh;
+    width: 100%;
+    background-color: white;
+    display: inline-block;
+    z-index: 10000;
+}
+
+#header img {
+    height: 100%;
+    width: auto;
+    margin-left: 7vw;
+    margin-top: 0vh;
+}
+
+#header nav {
+    width: 80%;
+    height: 100%;
+    float: right;
+}
+
+#header nav ul {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    list-style-type: none;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#header nav ul li a {
+    text-decoration: none;
+    color: black;
+}
+
+
+#best-movie {
+    margin-top: 10vh;
+    position: relative;
+    height: 90vh;
+    width: calc(100% - 7vw);
+    top: 0;
+    z-index: 10;
+    padding-left: 7vw;
+
+}
+
+
+#best-movie>img {
+    height: 80%;
+    width: auto;
+}
+
+#best_movie_button_container {
+    float: right;
+    height: 300px;
+    width: 10vw;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    top: 25vh;
+    right: 30vw;
+}
+
+#best_movie_button_container>button {
+    width: 100px;
+    height: 10%;
+}
+
+.best_movie_title {
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    height: 10%;
+    width: 100%;
+    text-align: left;
+}
+
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.6;
+    display: none;
+}
+
+swiper-container {
+    width: 80%;
+    height: 100%;
+    margin-top: 1%;
+    margin-bottom: 2.5%;
+    padding: 10% !important;
+    padding-bottom: 2% !important;
+    background: linear-gradient(#222222, #111111);
+}
+
+swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+swiper-slide img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+#sliders_container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    align-content: stretch;
+    background: #000;
+}
+
+.categories_title {
+    text-transform: capitalize;
+    width: 100%;
+    text-align: left;
+    padding-left: 5%;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: whitesmoke;
+}
+
+#display_movie_infos {
+    position: fixed;
+    display: none;
+    width: 90%;
+    height: 90%;
+    background-color: black;
+    color: white;
+    z-index: 100000;
+    right: 5vw;
+    justify-content: start;
+    top: 9vh;
+    border: 3px solid #FFD700;
+}
+
+#movie_title {
+    height: 7vh;
+    width: 70%;
+    text-align: center;
+    float: left;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#display_movie_infos>img {
+    height: 250px;
+    width: auto;
+    float: right;
+    margin-right: 6vw;
+}
+
+#display_movie_infos>h2 {
+    margin-top: 2vh;
+    width: 100%;
+    height: 5vh;
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
+#movie_description {
+    min-height: 20vh;
+    max-height: 33vh;
+    overflow: scroll;
+    margin-top: 2vh;
+    width: 60%;
+    margin-left: 6%;
+    text-align: center;
+    line-height: 2;
+    font-size: 13px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#movie_date_container {
+    width: 100%;
+}
+
+#infos_container {
+    display: flex;
+    justify-content: space-around;
+    width: 40%;
+    height: 100%;
+    float: right;
+}
+
+.columns {
+    justify-content: center;
+    width: 33%;
+    height: 100%;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.info_container {
+    justify-content: space-around;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+.info_container>span {
+    width: 100%;
+    text-align: center;
+    font-size: 15px;
+}
+
+.info_container>p {
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+}
+
+#actors_container {
+    display: flex;
+    width: 60%;
+    height: 100%;
+    float: left;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.actors {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    list-style-type: none;
+}
+
+.actors li {
+    width: 50%;
+    text-align: center;
+}
+
+#movie_data {
+    display: inline-block;
+    height: 45vh;
+    width: 100%;
+    margin-top: 4vh;
+}
+
+#close_button {
+    height: 10vh;
+    width: 5vw;
+    position: absolute;
+    right: 0vw;
+    top: 0;
+    z-index: 100;
+    background-color: white;
+    text-align: center;
+    color: black;
+    font-size: 3rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    cursor: pointer;
+}
