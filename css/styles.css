@@ -56,36 +56,63 @@ body {
 
 
 #best-movie {
-    margin-top: 10vh;
     position: relative;
     height: 90vh;
-    width: calc(100% - 7vw);
-    top: 0;
+    width: 100%;
+    top: 9vh;
     z-index: 10;
-    padding-left: 7vw;
 
+}
+
+
+#best_movie_announcement {
+    float: left;
+    text-align: center;
+    width: 70%;
 }
 
 
 #best-movie>img {
     height: 80%;
     width: auto;
+    float: right;
+}
+
+#best_movie_title {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1vh;
 }
 
 #best_movie_button_container {
-    float: right;
-    height: 300px;
-    width: 10vw;
+    float: left;
+    height: 250px;
+    width: 70%;
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
-    position: relative;
-    top: 25vh;
-    right: 30vw;
+    margin-top: 10%;
+}
+
+#best_movie_image_container {
+    width: 30%;
+    height: 90%;
+    float: right;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+
+#best_movie_image_container>img {
+    width: auto;
+    height: 90%;
+
 }
 
 #best_movie_button_container>button {
     width: 100px;
+    margin-right: auto;
+    margin-left: auto;
     height: 10%;
 }
 
@@ -94,7 +121,6 @@ body {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     height: 10%;
     width: 100%;
-    text-align: left;
 }
 
 

@@ -130,7 +130,8 @@ function create_movie_title(title) {
     let textNode = document.createTextNode(title);
     h1.appendChild(textNode);
     h1.className = "best_movie_title";
-    bestmovie_container = document.getElementById(best_movie_id)
+    h1.setAttribute('id', 'best_movie_title')
+    bestmovie_container = document.getElementById('best_movie_image_container')
     bestmovie_container.appendChild(h1)
 }
 
