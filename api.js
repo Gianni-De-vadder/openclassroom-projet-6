@@ -39,7 +39,6 @@ function get_best_movie() {
 
     // On utilise une boucle while pour récupérer toutes les pages de résultats
     let url = base_url + "titles?sort_by=-imdb_score";
-    console.log(url)
     xhr.open("GET", url, false); // On passe le paramètre false pour synchroniser les appels Ajax
     xhr.send();
 
@@ -138,7 +137,7 @@ function create_movie_title(title) {
 function create_best_movie_div(container) {
     movie = get_best_movie()
     create_movie_title(movie.title)
-    add_img_to_div(container, movie.image_url, movie.id)
+    add_img_to_div(container, movie.image_url, movie.id, true)
     document.getElementById(best_movie_id).setAttribute('class', movie.id)
 }
 
@@ -148,10 +147,13 @@ function create_best_movie_div(container) {
  * @param html_id - the id of the div you want to add the image to
  * @param url - The URL of the image you want to add to the div.
  */
-function add_img_to_div(html_id, url, id) {
+function add_img_to_div(html_id, url, id, onclick = false) {
     var img = document.createElement('img');
     img.src = url;
     img.setAttribute('id', id)
+    if (onclick == true) {
+        img.setAttribute('onclick', 'open_movie(this.id)')
+    }
     document.getElementById(html_id).appendChild(img);
 
 }
@@ -171,28 +173,53 @@ function add_div_to_slider(slider_id, id) {
 function add_movies_to_slider_by_category(category, number_of_slides, slider_html_id) {
     let category_movies = get_movies_by_category(category, number_of_slides);
     category_movies_id = get_movies_ids_from_list(category_movies);
+    add_prev_arrow_to_slider(category)
     category_movies_id.forEach(element => {
         create_movie_thumbnail_from_id(element, slider_html_id)
-    });
-    add_category_label(category, slider_html_id);
+    })
+    add_next_arrow_to_slider(category)
+    add_category_label(category, slider_html_id, category);
 }
-function add_bests_movies_to_slider(slider_name, number_of_slides, slider_html_id) {
+function add_prev_arrow_to_slider(category) {
+    let section_name = category + "_section"
+    const prevButtons = document.querySelectorAll('[class^="swiper-button-prev"]');
+    numPrevButtons = prevButtons.length;
+    let prev_arrow = document.createElement('span')
+    prev_arrow.className = "swiper-button-prev-" + numPrevButtons
+    prev_arrow.classList.add("material-symbols-outlined")
+    prev_arrow.innerHTML += 'arrow_back_ios';
+    document.getElementById(section_name).prepend(prev_arrow)
+}
+function add_next_arrow_to_slider(category) {
+    let section_name = category + "_section"
+    const nextButtons = document.querySelectorAll('[class^="swiper-button-next"]');
+    numNextButtons = nextButtons.length;
+    let next_arrow = document.createElement('span')
+    next_arrow.className = "swiper-button-next-" + numNextButtons
+    next_arrow.classList.add("material-symbols-outlined")
+    next_arrow.innerHTML += 'arrow_forward_ios';
+    document.getElementById(section_name).appendChild(next_arrow)
+}
+
+function add_bests_movies_to_slider(category, number_of_slides, slider_html_id) {
     let best_movies = get_bests_movies(number_of_slides);
     let best_movies_id = get_movies_ids_from_list(best_movies);
+    add_prev_arrow_to_slider('best_movies', best = true)
     best_movies_id.forEach(element => {
         create_movie_thumbnail_from_id(element, slider_html_id)
     });
-
-    add_category_label(slider_name, slider_html_id);
+    add_next_arrow_to_slider('best_movies', best = true)
+    add_category_label('best_movies', slider_html_id, category);
 }
 
-function add_category_label(category, slider_html_id) {
+function add_category_label(category, slider_html_id, category_title) {
+    let section_name = category + "_section"
     let h1 = document.createElement("h1");
-    let textNode = document.createTextNode(category);
+    let textNode = document.createTextNode(category_title);
     h1.appendChild(textNode);
     h1.className = "categories_title";
-    let slider = document.getElementById(slider_html_id)
-    insertAfter(h1, slider)
+    section = document.getElementById(section_name)
+    section.prepend(h1);
 }
 function insertAfter(newElement, targetElement) {
     // target is what you want it to go after. Look for this elements parent.
@@ -216,23 +243,7 @@ function formatTime(time) {
 function open_best_movie() {
     // window.scrollTo({ top: 0, behavior: 'smooth' });
     let bestmovie_id = document.getElementById(best_movie_id).className
-    movie = get_movie_from_id(bestmovie_id)
-    movie.duration = formatTime(movie.duration)
-    if (movie.rated == 'Not rated or unkown rating') {
-        movie.rated = 'Pas encore de vote'
-    }
-    document.getElementById('movie_title').innerText = movie.title
-    document.getElementById('movie_image').setAttribute('src', movie.image_url)
-    document.getElementById('movie_description').innerText = movie.long_description
-    document.getElementById('movie_date').innerText = movie.date_published
-    document.getElementById('movie_director').innerText = movie.directors[0]
-    document.getElementById('movie_time').innerText = movie.duration
-    document.getElementById('movie_rated').innerText = movie.rated
-    document.getElementById('movie_imdb').innerText = movie.imdb_score
-    document.getElementById('movie_country').innerText = movie.countries[0]
-    document.getElementById('movie_box_office').innerText = movie.worldwide_gross_income
-    display_movie_infos()
-    add_actors_movie_infos('movie_actors', movie.actors)
+    open_movie(bestmovie_id)
 
 }
 function display_movie_infos() {
@@ -259,18 +270,19 @@ function open_movie(id) {
     document.getElementById('movie_country').innerText = movie.countries[0]
     document.getElementById('movie_box_office').innerText = movie.worldwide_gross_income
     display_movie_infos()
-    add_actors_movie_infos('movie_actors', movie.actors)
+    add_li_movie_infos('movie_actors', movie.actors)
+    add_li_movie_infos('genres', movie.genres)
 
 }
-function add_actors_movie_infos(id, actors) {
+function add_li_movie_infos(id, elements) {
     let ul = document.getElementById(id);
     while (ul.firstChild) {
         ul.removeChild(ul.firstChild);
     }
-    for (let i = 0; i < actors.length; i++) {
+    for (let i = 0; i < elements.length; i++) {
         if (i < 14) {
             let li = document.createElement("li");
-            li.appendChild(document.createTextNode(actors[i]));
+            li.appendChild(document.createTextNode(elements[i]));
             ul.appendChild(li);
         }
         else {
@@ -286,6 +298,20 @@ function swiper() {
         Object.assign(swiperEl[i], {
             slidesPerView: 3,
             spaceBetween: 0,
+            navigation: true,
+            navigation: {
+                nextEl: '.swiper-button-next-' + i,
+                prevEl: '.swiper-button-prev-' + i,
+            },
+            fadeEffect: {
+                crossFade: true
+            },
+
+            pauseOnMouseEnter: true,
+            autoplay: {
+                delay: 3000,
+            },
+            disableOnInteraction: true,
             mousewheel: {
                 forceToAxis: true,
                 sensitivity: 5,
@@ -300,8 +326,13 @@ function swiper() {
                     spaceBetween: 40,
                 },
                 1024: {
-                    slidesPerView: 5,
-                    spaceBetween: 50,
+                    slidesPerView: 4,
+                    spaceBetween: 70,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        type: 'bullets',
+                    },
+                    uniqueNavElements: true
                 },
             },
         });

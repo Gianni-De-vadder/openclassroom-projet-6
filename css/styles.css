@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "montserrat-300";
+    src: url("../font/Montserrat/static/Montserrat-Light.ttf");
+}
+
 * {
     padding: 0;
     margin: 0;
@@ -5,6 +10,7 @@
     /* IE and Edge */
     scrollbar-width: none;
     /* Firefox */
+    font-family: "montserrat-300";
 }
 
 * ::-webkit-scrollbar {
@@ -46,7 +52,6 @@ body {
     justify-content: space-around;
     align-items: center;
     list-style-type: none;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 #header nav ul li a {
@@ -56,12 +61,22 @@ body {
 
 
 #best-movie {
-    position: relative;
     height: 90vh;
     width: 100%;
     top: 9vh;
-    z-index: 10;
+    z-index: 100;
+    background: #0f0c29;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+
+}
+
+#fourth_col {
+    border-right: none;
 }
 
 
@@ -100,6 +115,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    cursor: pointer;
 
 }
 
@@ -113,14 +129,14 @@ body {
     width: 100px;
     margin-right: auto;
     margin-left: auto;
-    height: 10%;
+    height: 20%;
 }
 
 .best_movie_title {
     color: white;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     height: 10%;
     width: 100%;
+    margin-top: 5vh;
 }
 
 
@@ -135,20 +151,37 @@ body {
     display: none;
 }
 
+#main {
+    position: absolute;
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 8vh;
+    justify-content: center;
+}
+
+.section_slider_container {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    height: 300px;
+    width: 100%;
+    flex-wrap: wrap;
+    padding-bottom: 15vh;
+    justify-content: center;
+}
+
 swiper-container {
     width: 80%;
     height: 100%;
     margin-top: 1%;
-    margin-bottom: 2.5%;
-    padding: 10% !important;
-    padding-bottom: 2% !important;
-    background: linear-gradient(#222222, #111111);
+    margin-bottom: 1.5%;
 }
 
 swiper-slide {
     text-align: center;
     font-size: 18px;
-    background: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -166,33 +199,41 @@ swiper-slide img {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+    padding-top: 5vh;
     margin-right: auto;
     margin-left: auto;
     align-content: stretch;
-    background: #000;
+    background-image: linear-gradient(110.1deg, rgba(30, 2, 83, 1) 44.2%, rgba(198, 55, 160, 1) 138.2%);
 }
+
 
 .categories_title {
     text-transform: capitalize;
     width: 100%;
     text-align: left;
-    padding-left: 5%;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding-left: 10%;
     color: whitesmoke;
 }
+
 
 #display_movie_infos {
     position: fixed;
     display: none;
     width: 90%;
     height: 90%;
-    background-color: black;
+    background: #0f0c29;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
     color: white;
     z-index: 100000;
     right: 5vw;
     justify-content: start;
     top: 9vh;
-    border: 3px solid #FFD700;
+    border: 3px solid darkgray;
 }
 
 #movie_title {
@@ -200,14 +241,14 @@ swiper-slide img {
     width: 70%;
     text-align: center;
     float: left;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-top: 2vh;
 }
 
 #display_movie_infos>img {
     height: 250px;
     width: auto;
     float: right;
-    margin-right: 6vw;
+    margin-right: 4vw;
 }
 
 #display_movie_infos>h2 {
@@ -215,12 +256,11 @@ swiper-slide img {
     width: 100%;
     height: 5vh;
     text-align: center;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 
 #movie_description {
-    min-height: 20vh;
+    min-height: 30vh;
     max-height: 33vh;
     overflow: scroll;
     margin-top: 2vh;
@@ -229,7 +269,9 @@ swiper-slide img {
     text-align: center;
     line-height: 2;
     font-size: 13px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    align-items: center;
+    display: flex;
+    padding: 5px;
 }
 
 #movie_date_container {
@@ -239,18 +281,19 @@ swiper-slide img {
 #infos_container {
     display: flex;
     justify-content: space-around;
-    width: 40%;
+    width: 69%;
     height: 100%;
     float: right;
+
 }
 
 .columns {
     justify-content: center;
     width: 33%;
     height: 100%;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     display: flex;
     flex-wrap: wrap;
+    border-right: 1px solid white;
 }
 
 .info_container {
@@ -265,6 +308,7 @@ swiper-slide img {
     width: 100%;
     text-align: center;
     font-size: 15px;
+    font-weight: 600;
 }
 
 .info_container>p {
@@ -275,11 +319,44 @@ swiper-slide img {
 
 #actors_container {
     display: flex;
-    width: 60%;
+    width: 30%;
     height: 100%;
     float: left;
     flex-wrap: wrap;
     justify-content: space-between;
+    border-right: 1px solid white;
+}
+
+#actors_container>span {
+    font-weight: 600;
+    height: 10%;
+}
+
+.infos_title {
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+}
+
+#genres {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 70%;
+}
+
+.genres {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    list-style-type: none;
+}
+
+.genres li {
+    height: 30px;
+    line-height: 30px;
+    width: 100%;
+    text-align: center;
 }
 
 .actors {
@@ -287,23 +364,32 @@ swiper-slide img {
     justify-content: center;
     flex-wrap: wrap;
     list-style-type: none;
+    height: 90%;
 }
 
 .actors li {
-    width: 50%;
+    width: 47%;
+    text-align: center;
+    height: 25px;
+    line-height: 25px;
+    font-size: 0.9rem;
+}
+
+.info_title {
+    width: 100%;
     text-align: center;
 }
 
 #movie_data {
     display: inline-block;
-    height: 45vh;
+    height: 43vh;
     width: 100%;
-    margin-top: 4vh;
+    margin-top: 3vh;
 }
 
 #close_button {
-    height: 10vh;
-    width: 5vw;
+    height: 6vh;
+    width: 3vw;
     position: absolute;
     right: 0vw;
     top: 0;
@@ -311,7 +397,26 @@ swiper-slide img {
     background-color: white;
     text-align: center;
     color: black;
-    font-size: 3rem;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 2rem;
     cursor: pointer;
+}
+
+[class*="swiper-button-"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem !important;
+    position: relative;
+    right: 0;
+    z-index: 1000;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+    cursor: pointer;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
 }
