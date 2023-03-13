@@ -18,8 +18,15 @@
 }
 
 
+
 body {
     background-color: #000;
+}
+
+.blur_effect {
+    background-color: #000;
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
 }
 
 #header {
@@ -130,6 +137,7 @@ body {
     margin-right: auto;
     margin-left: auto;
     height: 20%;
+    cursor: pointer;
 }
 
 .best_movie_title {

@@ -122,7 +122,7 @@ function get_movie_from_id(id) {
 function create_movie_thumbnail_from_id(id, slider_id) {
     movie = get_movie_from_id(id)
     add_div_to_slider(slider_id, movie.id)
-    add_img_to_div(movie.id, movie.image_url)
+    add_img_to_div(movie.id, movie.image_url, movie.id)
 }
 function create_movie_title(title) {
     let h1 = document.createElement("h1");
@@ -251,6 +251,8 @@ function display_movie_infos() {
     infos_window.style.display = 'inline-block'
 }
 function open_movie(id) {
+    let main = document.getElementById('main')
+    main.className = 'blur_effect'
     movie = get_movie_from_id(id)
     movie.duration = formatTime(movie.duration)
     if (movie.rated == 'Not rated or unkown rating') {
@@ -294,11 +296,11 @@ function add_li_movie_infos(id, elements) {
 }
 function swiper() {
     const swiperEl = document.querySelectorAll('swiper-container')
+    let autoplay_delay = 3000
     for (i = 0; i < swiperEl.length; i++) {
+
         Object.assign(swiperEl[i], {
-            slidesPerView: 3,
-            spaceBetween: 0,
-            navigation: true,
+            slidesPerView: 4,
             navigation: {
                 nextEl: '.swiper-button-next-' + i,
                 prevEl: '.swiper-button-prev-' + i,
@@ -306,15 +308,14 @@ function swiper() {
             fadeEffect: {
                 crossFade: true
             },
-
             pauseOnMouseEnter: true,
             autoplay: {
-                delay: 3000,
+                delay: autoplay_delay,
             },
             disableOnInteraction: true,
             mousewheel: {
                 forceToAxis: true,
-                sensitivity: 5,
+                sensitivity: 10,
             },
             breakpoints: {
                 640: {
@@ -328,18 +329,16 @@ function swiper() {
                 1024: {
                     slidesPerView: 4,
                     spaceBetween: 70,
-                    pagination: {
-                        el: '.swiper-pagination',
-                        type: 'bullets',
-                    },
                     uniqueNavElements: true
                 },
             },
         });
+        autoplay_delay += 500
         swiperEl[i].initialize();
     }
 }
 function closebutton() {
     let infos_window = document.getElementById('display_movie_infos')
     infos_window.style.display = 'none'
+    document.getElementById('main').classList.remove('blur_effect')
 }
