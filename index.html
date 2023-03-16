@@ -113,13 +113,13 @@
                 </swiper-container>
             </section>
 
-            <section id="crime_section" class="section_slider_container">
-                <swiper-container id="crime_slider" class="mySwiper swiper-container" init="false">
+            <section id="sci-fi_section" class="section_slider_container">
+                <swiper-container id="sci-fi_slider" class="mySwiper swiper-container" init="false">
                 </swiper-container>
             </section>
 
-            <section id="adventure_section" class="section_slider_container">
-                <swiper-container id="adventure_slider" class="mySwiper swiper-container" init="false">
+            <section id="thriller_section" class="section_slider_container">
+                <swiper-container id="thriller_slider" class="mySwiper swiper-container" init="false">
                 </swiper-container>
             </section>
         </div>
@@ -132,8 +132,8 @@
         add_movies_to_slider_by_category('comedy', 7, 'comedy_slider')
         create_best_movie_div('best_movie_image_container');
         add_movies_to_slider_by_category('romance', 7, 'romance_slider')
-        add_movies_to_slider_by_category('crime', 7, 'crime_slider')
-        add_movies_to_slider_by_category('adventure', 7, 'adventure_slider')
+        add_movies_to_slider_by_category('sci-fi', 7, 'sci-fi_slider')
+        add_movies_to_slider_by_category('thriller', 7, 'thriller_slider')
         swiper();
         document.onkeydown = function (evt) {
             evt = evt || window.event;

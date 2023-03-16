@@ -1,6 +1,13 @@
 const base_url = 'http://127.0.0.1:8000/api/v1/'
 const sliders_container_class = 'sliders_container'
 const best_movie_id = "best-movie"
+
+/**
+ * It makes a series of AJAX calls to the API, and returns an array of movies
+ * @param category - The category of movies you want to get.
+ * @param max_movies - The maximum number of movies to return.
+ * @returns An array of movies.
+ */
 function get_movies_by_category(category, max_movies) {
     let movies = [];
     let pagenumber = 1;
@@ -34,6 +41,40 @@ function get_movies_by_category(category, max_movies) {
     }
     return movies.slice(0, max_movies);
 }
+// async function get_movies_by_category(category, max_movies) {
+//     const movies = [];
+//     let pagenumber = 1;
+
+//     try {
+//       while (movies.length < max_movies) {
+//         const url = `${base_url}titles?genre=${category}&page=${pagenumber}`;
+//         const response = await fetch(url);
+//         if (!response.ok) {
+//           throw new Error(`HTTP error! status: ${response.status}`);
+//         }
+//         const jsonload = await response.json();
+//         const number_of_movies = Object.keys(jsonload.results).length;
+//         for (let i = 0; i < number_of_movies; i++) {
+//           movies.push(jsonload.results[i]);
+//           if (movies.length >= max_movies) {
+//             break;
+//           }
+//         }
+
+//         if (jsonload.next === null) {
+//           break;
+//         }
+
+//         pagenumber++;
+//       }
+//     } catch (error) {
+//       console.error(`Error fetching movies: ${error}`);
+//       return movies.slice(0, max_movies);
+//     }
+
+//     return movies.slice(0, max_movies);
+//   }
+
 function get_best_movie() {
     let xhr = new XMLHttpRequest();
 
@@ -321,10 +362,12 @@ function swiper() {
                 640: {
                     slidesPerView: 2,
                     spaceBetween: 20,
+                    uniqueNavElements: true,
                 },
                 768: {
                     slidesPerView: 4,
                     spaceBetween: 40,
+                    uniqueNavElements: true,
                 },
                 1024: {
                     slidesPerView: 4,
