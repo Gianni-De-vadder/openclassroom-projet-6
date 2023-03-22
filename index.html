@@ -11,7 +11,7 @@
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
-    <script src="api.js"></script>
+    <script src="api.js" defer></script>
     <title>JustStreamIt</title>
 </head>
 
@@ -124,24 +124,6 @@
             </section>
         </div>
     </main>
-
-
-
-    <script>
-        add_bests_movies_to_slider('Meilleurs films', 7, 'best_movies_slider')
-        add_movies_to_slider_by_category('comedy', 7, 'comedy_slider')
-        create_best_movie_div('best_movie_image_container');
-        add_movies_to_slider_by_category('romance', 7, 'romance_slider')
-        add_movies_to_slider_by_category('sci-fi', 7, 'sci-fi_slider')
-        add_movies_to_slider_by_category('thriller', 7, 'thriller_slider')
-        swiper();
-        document.onkeydown = function (evt) {
-            evt = evt || window.event;
-            if (evt.keyCode == 27) {
-                closebutton();
-            }
-        };
-    </script>
 </body>
 
 </html>

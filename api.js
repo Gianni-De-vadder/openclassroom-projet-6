@@ -8,6 +8,7 @@ const best_movie_id = "best-movie"
  * @param max_movies - The maximum number of movies to return.
  * @returns An array of movies.
  */
+
 function get_movies_by_category(category, max_movies) {
     let movies = [];
     let pagenumber = 1;
@@ -16,7 +17,7 @@ function get_movies_by_category(category, max_movies) {
     // On utilise une boucle while pour récupérer toutes les pages de résultats
     while (movies.length < max_movies) {
         let url = base_url + "titles?genre=" + category + "&page=" + pagenumber;
-        xhr.open("GET", url, false); // On passe le paramètre false pour synchroniser les appels Ajax
+        xhr.open("GET", url, false);
         xhr.send();
 
         if (xhr.status === 200) {
@@ -41,39 +42,6 @@ function get_movies_by_category(category, max_movies) {
     }
     return movies.slice(0, max_movies);
 }
-// async function get_movies_by_category(category, max_movies) {
-//     const movies = [];
-//     let pagenumber = 1;
-
-//     try {
-//       while (movies.length < max_movies) {
-//         const url = `${base_url}titles?genre=${category}&page=${pagenumber}`;
-//         const response = await fetch(url);
-//         if (!response.ok) {
-//           throw new Error(`HTTP error! status: ${response.status}`);
-//         }
-//         const jsonload = await response.json();
-//         const number_of_movies = Object.keys(jsonload.results).length;
-//         for (let i = 0; i < number_of_movies; i++) {
-//           movies.push(jsonload.results[i]);
-//           if (movies.length >= max_movies) {
-//             break;
-//           }
-//         }
-
-//         if (jsonload.next === null) {
-//           break;
-//         }
-
-//         pagenumber++;
-//       }
-//     } catch (error) {
-//       console.error(`Error fetching movies: ${error}`);
-//       return movies.slice(0, max_movies);
-//     }
-
-//     return movies.slice(0, max_movies);
-//   }
 
 function get_best_movie() {
     let xhr = new XMLHttpRequest();
@@ -125,10 +93,6 @@ function get_bests_movies(max_movies) {
     }
     return movies.slice(0, max_movies);
 }
-
-
-
-
 
 function get_movies_ids_from_list(json) {
     ids = [];
@@ -385,3 +349,17 @@ function closebutton() {
     infos_window.style.display = 'none'
     document.getElementById('main').classList.remove('blur_effect')
 }
+
+add_bests_movies_to_slider('Meilleurs films', 7, 'best_movies_slider')
+add_movies_to_slider_by_category('comedy', 7, 'comedy_slider')
+create_best_movie_div('best_movie_image_container');
+add_movies_to_slider_by_category('romance', 7, 'romance_slider')
+add_movies_to_slider_by_category('sci-fi', 7, 'sci-fi_slider')
+add_movies_to_slider_by_category('thriller', 7, 'thriller_slider')
+swiper();
+document.onkeydown = function (evt) {
+    evt = evt || window.event;
+    if (evt.keyCode == 27) {
+        closebutton();
+    }
+};
