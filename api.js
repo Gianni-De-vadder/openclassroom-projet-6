@@ -9,19 +9,17 @@ const best_movie_id = "best-movie"
  * @returns An array of movies.
  */
 
-function get_movies_by_category(category, max_movies) {
+async function get_movies_by_category(category, max_movies) {
     let movies = [];
     let pagenumber = 1;
-    let xhr = new XMLHttpRequest();
+    let url = base_url + "titles?genre=" + category + "&page=" + pagenumber;
 
     // On utilise une boucle while pour récupérer toutes les pages de résultats
     while (movies.length < max_movies) {
-        let url = base_url + "titles?genre=" + category + "&page=" + pagenumber;
-        xhr.open("GET", url, false);
-        xhr.send();
+        const response = await fetch(url);
 
-        if (xhr.status === 200) {
-            let jsonload = JSON.parse(xhr.responseText);
+        if (response.ok) {
+            let jsonload = await response.json();
             let number_of_movies = Object.keys(jsonload.results).length;
             for (let i = 0; i < number_of_movies; i++) {
                 movies.push(jsonload.results[i]);
@@ -35,6 +33,7 @@ function get_movies_by_category(category, max_movies) {
             }
 
             pagenumber++; // On passe à la page suivante
+            url = jsonload.next;
         } else {
             alert('Il y a eu un problème durant le chargement des données');
             break; // On sort de la boucle en cas d'erreur
@@ -43,37 +42,18 @@ function get_movies_by_category(category, max_movies) {
     return movies.slice(0, max_movies);
 }
 
-function get_best_movie() {
-    let xhr = new XMLHttpRequest();
-
-    // On utilise une boucle while pour récupérer toutes les pages de résultats
-    let url = base_url + "titles?sort_by=-imdb_score";
-    xhr.open("GET", url, false); // On passe le paramètre false pour synchroniser les appels Ajax
-    xhr.send();
-
-    if (xhr.status === 200) {
-        let jsonload = JSON.parse(xhr.responseText);
-        let bestmovie_id = (jsonload.results[0].id)
-        let bestmovie = get_movie_from_id(bestmovie_id)
-        return bestmovie
-
-    } else {
-        alert('Il y a eu un problème durant le chargement des données');
-    }
-}
-
-function get_bests_movies(max_movies) {
+async function get_bests_movies(max_movies) {
     let movies = [];
     let pagenumber = 1;
-    let xhr = new XMLHttpRequest();
+    let url = base_url + "titles?sort_by=-imdb_score" + "&page=" + pagenumber;
+
 
     // On utilise une boucle while pour récupérer toutes les pages de résultats
     while (movies.length < max_movies) {
-        let url = base_url + "titles?sort_by=-imdb_score" + "&page=" + pagenumber;
-        xhr.open("GET", url, false); // On passe le paramètre false pour synchroniser les appels Ajax
-        xhr.send();
-        if (xhr.status === 200) {
-            let jsonload = JSON.parse(xhr.responseText);
+        const response = await fetch(url);
+
+        if (response.ok) {
+            let jsonload = await response.json();
             let number_of_movies = Object.keys(jsonload.results).length;
             for (let i = 0; i < number_of_movies; i++) {
                 movies.push(jsonload.results[i]);
@@ -81,18 +61,38 @@ function get_bests_movies(max_movies) {
                     break; // On sort de la boucle si on a atteint le nombre maximal de films demandés
                 }
             }
+
             if (jsonload.next === null) {
                 break; // On sort de la boucle si on a atteint la dernière page de résultats
             }
+
             pagenumber++; // On passe à la page suivante
+            url = jsonload.next;
         } else {
             alert('Il y a eu un problème durant le chargement des données');
             break; // On sort de la boucle en cas d'erreur
         }
-
     }
     return movies.slice(0, max_movies);
 }
+
+async function get_best_movie() {
+    try {
+        let url = base_url + "titles?sort_by=-imdb_score";
+        let response = await fetch(url);
+        if (response.ok) {
+            let jsonload = await response.json();
+            let bestmovie_id = jsonload.results[0].id;
+            let bestmovie = await get_movie_from_id(bestmovie_id);
+            return bestmovie;
+        } else {
+            throw new Error('Il y a eu un problème durant le chargement des données');
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 
 function get_movies_ids_from_list(json) {
     ids = [];
@@ -101,22 +101,21 @@ function get_movies_ids_from_list(json) {
     });
     return ids
 }
-function get_movie_from_id(id) {
-    let xhr = new XMLHttpRequest();
-
-    // On utilise une boucle while pour récupérer toutes les pages de résultats
-    let url = base_url + "titles/" + id;
-    xhr.open("GET", url, false); // On passe le paramètre false pour synchroniser les appels Ajax
-    xhr.send();
-
-    if (xhr.status === 200) {
-        let jsonload = JSON.parse(xhr.responseText);
-        return jsonload
-    }
-    else {
-        alert('Il y a eu un problème durant le chargement des données');
+async function get_movie_from_id(id) {
+    try {
+        let url = base_url + "titles/" + id;
+        let response = await fetch(url);
+        if (response.ok) {
+            let jsonload = await response.json();
+            return jsonload;
+        } else {
+            throw new Error('Il y a eu un problème durant le chargement des données');
+        }
+    } catch (error) {
+        console.error(error);
     }
 }
+
 
 
 /**
@@ -124,8 +123,8 @@ function get_movie_from_id(id) {
  * @param id - the id of the movie
  * @param slider_id - the id of the div that the thumbnail will be added to
  */
-function create_movie_thumbnail_from_id(id, slider_id) {
-    movie = get_movie_from_id(id)
+async function create_movie_thumbnail_from_id(id, slider_id) {
+    movie = await get_movie_from_id(id)
     add_div_to_slider(slider_id, movie.id)
     add_img_to_div(movie.id, movie.image_url, movie.id)
 }
@@ -139,8 +138,8 @@ function create_movie_title(title) {
     bestmovie_container.appendChild(h1)
 }
 
-function create_best_movie_div(container) {
-    movie = get_best_movie()
+async function create_best_movie_div(container) {
+    movie = await get_best_movie()
     create_movie_title(movie.title)
     add_img_to_div(container, movie.image_url, movie.id, true)
     document.getElementById(best_movie_id).setAttribute('class', movie.id)
@@ -175,7 +174,7 @@ function add_div_to_slider(slider_id, id) {
     document.getElementById(slider_id).appendChild(slide);
 }
 
-function add_movies_to_slider_by_category(category, number_of_slides, slider_html_id) {
+async function add_movies_to_slider_by_category(category, number_of_slides, slider_html_id) {
     let category_movies = get_movies_by_category(category, number_of_slides);
     category_movies_id = get_movies_ids_from_list(category_movies);
     add_prev_arrow_to_slider(category)
@@ -195,15 +194,109 @@ function add_prev_arrow_to_slider(category) {
     prev_arrow.innerHTML += 'arrow_back_ios';
     document.getElementById(section_name).prepend(prev_arrow)
 }
-function add_next_arrow_to_slider(category) {
-    let section_name = category + "_section"
-    const nextButtons = document.querySelectorAll('[class^="swiper-button-next"]');
-    numNextButtons = nextButtons.length;
-    let next_arrow = document.createElement('span')
-    next_arrow.className = "swiper-button-next-" + numNextButtons
-    next_arrow.classList.add("material-symbols-outlined")
-    next_arrow.innerHTML += 'arrow_forward_ios';
-    document.getElementById(section_name).appendChild(next_arrow)
+
+async function create_slider(category, section, number_of_slides = 7, best = false) {
+    const slider_section = document.getElementById(section);
+    let category_name = document.createElement('h1')
+    let text = document.createTextNode(category)
+    category_name.classList.add('categories_title')
+    category_name.appendChild(text)
+    slider_section.append(category_name)
+    let slider_container = document.createElement('ul');
+    slider_container.setAttribute('id', category + '_slider')
+    slider_container.classList.add('slider_container');
+
+    if (best == false) {
+        movies = await get_movies_by_category(category, number_of_slides);
+    }
+    else if (best == true) {
+        movies = await get_bests_movies(number_of_slides);
+
+    }
+    let left_arrow = create_arrow('left', category);
+    slider_section.appendChild(left_arrow);
+    slider_section.appendChild(slider_container)
+    movies.forEach(movie => {
+        let slide = create_slide(movie);
+        slider_container.appendChild(slide)
+
+    });
+    let right_arrow = create_arrow('right', category);
+    slider_section.appendChild(right_arrow);
+}
+
+// function add_slide_to_slider(category, slider) {
+// }
+
+function create_slide(movie) {
+    let slide = document.createElement('li');
+    let overlay = document.createElement('div');
+    let movie_title = document.createElement('h3');
+    let text = document.createTextNode(movie.title);
+    let img = create_movie_image(movie, true)
+
+    slide.classList.add('slide');
+    overlay.classList.add('overlay');
+
+    movie_title.appendChild(text)
+    overlay.appendChild(movie_title)
+    overlay.setAttribute('id', movie.id)
+    overlay.setAttribute('onclick', 'open_movie(this.id)')
+
+    slide.appendChild(overlay)
+    slide.appendChild(img)
+    console.log(movie)
+    return slide
+}
+function create_movie_image(movie, onclick = false) {
+    let img = document.createElement('img');
+    img.src = movie.image_url;
+    img.setAttribute('id', movie.id)
+    if (onclick == true) {
+        img.setAttribute('onclick', 'open_movie(this.id)')
+    }
+    return img
+
+}
+
+function create_arrow(direction, category) {
+    let arrow = document.createElement('span')
+    arrow.setAttribute('id', category + '_arrow')
+    arrow.classList.add("material-symbols-outlined");
+    arrow.classList.add("arrows");
+    if (direction == 'left') {
+        arrow.setAttribute('onclick', 'move_slider("left",this.id)')
+        arrow.innerHTML += "arrow_back_ios";
+    }
+    else if (direction == 'right') {
+        arrow.innerHTML += 'arrow_forward_ios';
+        arrow.setAttribute('onclick', 'move_slider("right",this.id)')
+    }
+    return arrow
+}
+
+function move_slider(direction, arrow_id) {
+    section_id = arrow_id.replace('_arrow', '_slider')
+    slider = document.getElementById(section_id)
+    slide = document.getElementsByClassName('slide')
+    console.log(slider)
+    if (direction == 'left') {
+        console.log('left')
+        let calc = slider.scrollLeft - (slide[0].offsetWidth * 2)
+        slider.scrollTo({
+            left: calc,
+            behavior: 'smooth',
+        });
+    }
+    else if (direction == 'right') {
+        console.log('right')
+        let calc = slider.scrollLeft + (slide[0].offsetWidth * 2)
+        slider.scrollTo({
+            left: calc,
+            behavior: 'smooth',
+        });
+    }
+
 }
 
 function add_bests_movies_to_slider(category, number_of_slides, slider_html_id) {
@@ -255,10 +348,10 @@ function display_movie_infos() {
     let infos_window = document.getElementById('display_movie_infos')
     infos_window.style.display = 'inline-block'
 }
-function open_movie(id) {
+async function open_movie(id) {
     let main = document.getElementById('main')
     main.className = 'blur_effect'
-    movie = get_movie_from_id(id)
+    movie = await get_movie_from_id(id)
     movie.duration = formatTime(movie.duration)
     if (movie.rated == 'Not rated or unkown rating') {
         movie.rated = 'Pas encore de vote'
@@ -299,67 +392,20 @@ function add_li_movie_infos(id, elements) {
     }
 
 }
-function swiper() {
-    const swiperEl = document.querySelectorAll('swiper-container')
-    let autoplay_delay = 3000
-    for (i = 0; i < swiperEl.length; i++) {
-
-        Object.assign(swiperEl[i], {
-            slidesPerView: 4,
-            navigation: {
-                nextEl: '.swiper-button-next-' + i,
-                prevEl: '.swiper-button-prev-' + i,
-            },
-            fadeEffect: {
-                crossFade: true
-            },
-            pauseOnMouseEnter: true,
-            autoplay: {
-                delay: autoplay_delay,
-            },
-            disableOnInteraction: true,
-            mousewheel: {
-                forceToAxis: true,
-                sensitivity: 10,
-            },
-            breakpoints: {
-                640: {
-                    slidesPerView: 2,
-                    spaceBetween: 20,
-                    uniqueNavElements: true,
-                },
-                768: {
-                    slidesPerView: 4,
-                    spaceBetween: 40,
-                    uniqueNavElements: true,
-                },
-                1024: {
-                    slidesPerView: 4,
-                    spaceBetween: 70,
-                    uniqueNavElements: true
-                },
-            },
-        });
-        autoplay_delay += 500
-        swiperEl[i].initialize();
-    }
-}
 function closebutton() {
     let infos_window = document.getElementById('display_movie_infos')
     infos_window.style.display = 'none'
     document.getElementById('main').classList.remove('blur_effect')
 }
 
-add_bests_movies_to_slider('Meilleurs films', 7, 'best_movies_slider')
-add_movies_to_slider_by_category('comedy', 7, 'comedy_slider')
-create_best_movie_div('best_movie_image_container');
-add_movies_to_slider_by_category('romance', 7, 'romance_slider')
-add_movies_to_slider_by_category('sci-fi', 7, 'sci-fi_slider')
-add_movies_to_slider_by_category('thriller', 7, 'thriller_slider')
-swiper();
 document.onkeydown = function (evt) {
     evt = evt || window.event;
     if (evt.keyCode == 27) {
         closebutton();
     }
 };
+
+create_best_movie_div('best_movie_image_container');
+create_slider('best', 'best_section', 7, best = true);
+create_slider('horror', 'horror_section');
+create_slider('comedy', 'comedy_section');

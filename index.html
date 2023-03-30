@@ -8,10 +8,8 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
-    <script src="api.js" defer></script>
+
     <title>JustStreamIt</title>
 </head>
 
@@ -98,32 +96,13 @@
 
         </div>
         <div id="sliders_container">
-            <section id="best_movies_section" class="section_slider_container">
-                <swiper-container id="best_movies_slider" class="mySwiper swiper-container" init="false">
-                </swiper-container>
 
-            </section>
-
-            <section id="comedy_section" class="section_slider_container">
-                <swiper-container id="comedy_slider" class="mySwiper swiper-container" init="false">
-                </swiper-container>
-            </section>
-            <section id="romance_section" class="section_slider_container">
-                <swiper-container id="romance_slider" class="mySwiper swiper-container" init="false">
-                </swiper-container>
-            </section>
-
-            <section id="sci-fi_section" class="section_slider_container">
-                <swiper-container id="sci-fi_slider" class="mySwiper swiper-container" init="false">
-                </swiper-container>
-            </section>
-
-            <section id="thriller_section" class="section_slider_container">
-                <swiper-container id="thriller_slider" class="mySwiper swiper-container" init="false">
-                </swiper-container>
-            </section>
+            <section class="slider_section" id="best_section"></section>
+            <section class="slider_section" id="horror_section"></section>
+            <section class="slider_section" id="comedy_section"></section>
         </div>
     </main>
+    <script src="api.js"></script>
 </body>
 
 </html>
